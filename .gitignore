@@ -1,0 +1,6 @@
+.terraform
+local.auto.tfvars
+lambda_function_payload.zip
+
+terraform.tfstate
+terraform.tfstate.backup
