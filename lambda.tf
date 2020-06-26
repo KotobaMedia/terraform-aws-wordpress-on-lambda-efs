@@ -74,7 +74,7 @@ data "aws_iam_policy_document" "phpserver_main" {
   # See https://github.com/humanmade/S3-Uploads/blob/539d0c16d4fb778caeb4fd2b12f5718fb48baea0/inc/class-s3-uploads-wp-cli-command.php#L112-L134
   # for the original policy.
   statement {
-    sid = "2"
+    sid    = "2"
     effect = "Allow"
     actions = [
       "s3:AbortMultipartUpload",
@@ -104,6 +104,6 @@ resource "aws_iam_role_policy" "phpserver_main" {
 }
 
 resource "aws_cloudwatch_log_group" "phpserver" {
-  name = "/aws/lambda/${local.lambda_function_name}"
+  name              = "/aws/lambda/${local.lambda_function_name}"
   retention_in_days = 30
 }

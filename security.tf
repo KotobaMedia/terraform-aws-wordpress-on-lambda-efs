@@ -6,7 +6,7 @@ resource "aws_security_group" "efs_access" {
 
 resource "aws_security_group_rule" "efs_access_efs" {
   security_group_id = aws_security_group.efs_access.id
-  
+
   type      = "ingress"
   from_port = 2049
   to_port   = 2049
