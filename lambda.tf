@@ -14,6 +14,12 @@ resource "aws_lambda_function" "phpserver" {
     "arn:aws:lambda:us-west-2:777160072469:layer:php73:11"
   ]
 
+  environment {
+    variables = {
+      "UPLOADS_S3_BUCKET" = aws_s3_bucket.assets.bucket
+    }
+  }
+
   vpc_config {
     subnet_ids         = var.subnet_ids
     security_group_ids = local.security_group_ids
@@ -61,6 +67,32 @@ data "aws_iam_policy_document" "phpserver_main" {
     resources = [
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.phpserver.name}",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:${aws_cloudwatch_log_group.phpserver.name}:log-stream:*"
+    ]
+  }
+
+  # The policy to allow WordPress to interact with this bucket.
+  # See https://github.com/humanmade/S3-Uploads/blob/539d0c16d4fb778caeb4fd2b12f5718fb48baea0/inc/class-s3-uploads-wp-cli-command.php#L112-L134
+  # for the original policy.
+  statement {
+    sid = "2"
+    effect = "Allow"
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:DeleteObject",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation",
+      "s3:GetBucketPolicy",
+      "s3:GetObject",
+      "s3:GetObjectAcl",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:ListMultipartUploadParts",
+      "s3:PutObject",
+      "s3:PutObjectAcl"
+    ]
+    resources = [
+      aws_s3_bucket.assets.arn,
+      "${aws_s3_bucket.assets.arn}/*"
     ]
   }
 }

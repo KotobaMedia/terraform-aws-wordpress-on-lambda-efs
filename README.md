@@ -8,7 +8,7 @@ This is distributed as a Terraform module, unlike the last version which was a S
 * EFS filesystem
 * A security group allowing access from the Lambda function to the EFS filesystem
 * API Gateway
-* S3 bucket to store uploaded files (not yet)
+* S3 bucket to store uploaded files
 * CloudFront distribution to serve static assets directly (not yet)
 
 ### AWS Resources not included that are required to run this module.
