@@ -2,6 +2,12 @@
 
 // A special handler.
 
+// Verify the request came through CloudFront
+if ($_SERVER['HTTP_X_CFSHAREDSECRET'] != $_ENV['CF_SHARED_SECERT']) {
+  http_response_code(403);
+  die('Proxy authentication failed');
+}
+
 // All requests through API Gateway are HTTPS.
 $_SERVER['HTTPS'] = 'on';
 $_SERVER['DOCUMENT_ROOT'] = "/mnt/root";

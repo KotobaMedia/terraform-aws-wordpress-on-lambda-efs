@@ -1,3 +1,7 @@
+resource "random_string" "cf_shared_secret" {
+  length  = 20
+}
+
 resource "aws_cloudfront_origin_access_identity" "assets" {
   comment = "(WordPress on Lambda) Identifies CloudFront to S3"
 }
@@ -201,6 +205,11 @@ resource "aws_cloudfront_distribution" "main" {
       origin_protocol_policy   = "https-only"
       origin_read_timeout      = "30"
       origin_ssl_protocols     = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+    }
+
+    custom_header {
+      name  = "X-CFSharedSecret"
+      value = random_string.cf_shared_secret.result
     }
   }
 
