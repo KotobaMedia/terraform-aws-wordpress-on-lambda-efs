@@ -11,7 +11,7 @@ resource "aws_lambda_function" "phpserver" {
   runtime = "provided"
 
   layers = [
-    "arn:aws:lambda:us-west-2:777160072469:layer:php73:11"
+    "arn:aws:lambda:us-west-2:777160072469:layer:php73:15"
   ]
 
   environment {
