@@ -1,5 +1,5 @@
 resource "random_string" "cf_shared_secret" {
-  length  = 20
+  length = 20
 }
 
 resource "aws_cloudfront_origin_access_identity" "assets" {
@@ -12,6 +12,8 @@ resource "aws_cloudfront_distribution" "main" {
   price_class     = "PriceClass_100"
   enabled         = true
   comment         = "WordPress on Lambda Main Distribution (${random_string.namespace.result})"
+
+  aliases = compact([var.domain_name])
 
   # These are standard error code customizations to prevent CloudFront from
   # caching them for the default duration (300 seconds)
@@ -228,9 +230,11 @@ resource "aws_cloudfront_distribution" "main" {
     }
   }
 
+
   viewer_certificate {
-    cloudfront_default_certificate = true
-    minimum_protocol_version       = "TLSv1"
-    # ssl_support_method             = "sni-only"
+    cloudfront_default_certificate = var.acm_certificate_arn == null ? true : false
+    minimum_protocol_version       = var.acm_certificate_arn == null ? "TLSv1" : var.cloudfront_minimum_protocol_version
+    ssl_support_method             = var.acm_certificate_arn == null ? null : "sni-only"
+    acm_certificate_arn            = var.acm_certificate_arn
   }
 }

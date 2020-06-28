@@ -17,7 +17,7 @@ resource "aws_lambda_function" "phpserver" {
   environment {
     variables = {
       "UPLOADS_S3_BUCKET" = aws_s3_bucket.assets.bucket
-      "CF_SHARED_SECERT" = random_string.cf_shared_secret.result
+      "CF_SHARED_SECERT"  = random_string.cf_shared_secret.result
     }
   }
 
