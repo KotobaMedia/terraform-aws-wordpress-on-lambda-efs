@@ -1,3 +1,9 @@
+data "archive_file" "phpserver_payload" {
+  type = "zip"
+  source_dir = "${path.module}/src"
+  output_path = "${path.module}/lambda_function_payload.zip"
+}
+
 resource "aws_lambda_function" "phpserver" {
   filename      = "lambda_function_payload.zip"
   function_name = local.lambda_function_name
@@ -6,12 +12,12 @@ resource "aws_lambda_function" "phpserver" {
   memory_size   = 1024
   timeout       = 30
 
-  source_code_hash = filebase64sha256("lambda_function_payload.zip")
+  source_code_hash = data.archive_file.phpserver_payload.output_base64sha256
 
   runtime = "provided"
 
   layers = [
-    "arn:aws:lambda:us-west-2:777160072469:layer:php73:15"
+    "arn:aws:lambda:us-west-2:777160072469:layer:php73:18"
   ]
 
   environment {

@@ -7,6 +7,10 @@ provider "random" {
   version = "~> 2.0"
 }
 
+provider "archive" {
+  version = "~> 1.0"
+}
+
 variable "region" {
   type    = string
   default = "us-west-2"

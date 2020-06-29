@@ -15,7 +15,6 @@ resource "aws_apigatewayv2_integration" "main_lambda" {
   payload_format_version = "1.0" # our PHP layer expects the 1.0 format
   connection_type        = "INTERNET"
   integration_method     = "POST"
-  passthrough_behavior   = "WHEN_NO_MATCH"
   integration_uri        = aws_lambda_function.phpserver.invoke_arn
 }
 

@@ -19,7 +19,11 @@ $extension_map = array(
   "png" => "image/png",
   "jpeg" => "image/jpeg",
   "jpg" => "image/jpeg",
-  "svg" => "image/svg+xml"
+  "gif" => "image/gif",
+  "svg" => "image/svg+xml",
+  "woff" => "font/woff",
+  "woff2" => "font/woff2",
+  "ttf" => "font/ttf",
 );
 
 $request_uri = explode("?", $_SERVER['REQUEST_URI']);
@@ -27,8 +31,7 @@ $local_file_path = $_SERVER['DOCUMENT_ROOT'] . $request_uri[0];
 
 if ( $local_file_path == __FILE__ ) {
   http_response_code(400);
-  echo 'Sorry';
-  exit();
+  die('The handler can not be called directly.');
 }
 
 $split = explode(".", $local_file_path);
