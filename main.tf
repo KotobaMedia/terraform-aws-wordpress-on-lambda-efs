@@ -26,6 +26,19 @@ variable "subnet_ids" {
   description = "Subnet IDs to assign to the Lambda function"
 }
 
+variable "php_lambda_layer_arns_by_region" {
+  type = map(string)
+  default = {
+    us-west-2 = "arn:aws:lambda:us-west-2:777160072469:layer:php73:18"
+  }
+}
+
+variable "php_lambda_layer_arn" {
+  type        = string
+  description = "(Optional) The ARN of a custom PHP Lambda Layer you'd like to use."
+  default     = null
+}
+
 variable "domain_name" {
   type        = string
   description = "(optional) The domain name you would like to use for the CloudFront distribution. Note that you are responsible for setting the alias record or CNAME record."
@@ -68,6 +81,7 @@ locals {
   security_group_ids   = concat(var.security_group_ids, [aws_security_group.efs_access.id])
   lambda_function_name = "wp-on-lambda-efs-${random_string.namespace.result}"
   assets_bucket_name   = "${local.lambda_function_name}-assets"
+  php_lambda_layer_arn = var.php_lambda_layer_arn != null ? var.php_lambda_layer_arn : var.php_lambda_layer_arns_by_region[var.region]
 }
 
 data "aws_subnet" "first" {

@@ -1,6 +1,6 @@
 data "archive_file" "phpserver_payload" {
-  type = "zip"
-  source_dir = "${path.module}/src"
+  type        = "zip"
+  source_dir  = "${path.module}/src"
   output_path = "${path.module}/lambda_function_payload.zip"
 }
 
@@ -17,7 +17,7 @@ resource "aws_lambda_function" "phpserver" {
   runtime = "provided"
 
   layers = [
-    "arn:aws:lambda:us-west-2:777160072469:layer:php73:18"
+    local.php_lambda_layer_arn
   ]
 
   environment {
